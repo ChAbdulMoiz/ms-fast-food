@@ -1,3 +1,7 @@
+export const config = {
+  runtime: "edge",
+};
+
 let menuData = {
   "Shawarma": [
     { id: "shawarma-large", name: "Chicken Shawarma (Large)", price: 150, available: true, description: "Big size wrap, full of flavour and juicy chicken.", tags: ["Street Favourite"] },
@@ -15,31 +19,54 @@ let menuData = {
   ]
 };
 
-export default function handler(req, res) {
-  res.setHeader("Access-Control-Allow-Origin", "*");
-  res.setHeader("Access-Control-Allow-Methods", "GET,PUT,OPTIONS");
-  res.setHeader("Access-Control-Allow-Headers", "Content-Type");
+export default async function handler(req) {
+  const { method } = req;
 
-  if (req.method === "OPTIONS") {
-    return res.status(200).end();
+  const headers = {
+    "Access-Control-Allow-Origin": "*",
+    "Access-Control-Allow-Methods": "GET,PUT,OPTIONS",
+    "Access-Control-Allow-Headers": "Content-Type",
+  };
+
+  if (method === "OPTIONS") {
+    return new Response(null, { status: 200, headers });
   }
 
-  if (req.method === "GET") {
-    return res.status(200).json(menuData);
+  if (method === "GET") {
+    return new Response(JSON.stringify(menuData), {
+      status: 200,
+      headers: { ...headers, "Content-Type": "application/json" },
+    });
   }
 
-  if (req.method === "PUT") {
+  if (method === "PUT") {
+    let body;
     try {
-      const newMenu = req.body;
-      if (!newMenu || typeof newMenu !== "object") {
-        return res.status(400).json({ error: "Invalid menu data" });
-      }
-      menuData = newMenu;
-      return res.status(200).json({ ok: true });
-    } catch (e) {
-      return res.status(500).json({ error: "Failed to update menu" });
+      body = await req.json();
+    } catch {
+      return new Response(JSON.stringify({ error: "Invalid JSON" }), {
+        status: 400,
+        headers: { ...headers, "Content-Type": "application/json" },
+      });
     }
+
+    if (!body || typeof body !== "object" || Array.isArray(body)) {
+      return new Response(JSON.stringify({ error: "Invalid menu data" }), {
+        status: 400,
+        headers: { ...headers, "Content-Type": "application/json" },
+      });
+    }
+
+    menuData = body;
+
+    return new Response(JSON.stringify({ ok: true }), {
+      status: 200,
+      headers: { ...headers, "Content-Type": "application/json" },
+    });
   }
 
-  return res.status(405).json({ error: "Method not allowed" });
+  return new Response(JSON.stringify({ error: "Method not allowed" }), {
+    status: 405,
+    headers: { ...headers, "Content-Type": "application/json" },
+  });
 }
