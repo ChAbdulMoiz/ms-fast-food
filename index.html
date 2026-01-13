@@ -1651,6 +1651,7 @@
 
     <!-- HOME PAGE -->
     <section id="page-home" class="page active">
+
       <section class="hero">
         <div>
           <h1 class="hero-heading">
@@ -1882,6 +1883,7 @@
     <!-- OWNER PORTAL PAGE -->
     <section id="page-owner" class="page">
 
+      <!-- LOGIN -->
       <div id="ownerLoginSection">
         <div class="section">
           <div class="owner-login-box card">
@@ -1918,6 +1920,7 @@
         </div>
       </div>
 
+      <!-- DASHBOARD -->
       <div id="ownerDashboard" style="display:none;">
         <section class="section">
           <div class="section-header">
@@ -1939,6 +1942,7 @@
 
           <div class="owner-layout">
 
+            <!-- ORDERS -->
             <div class="card">
               <div class="card-title">
                 <span>Orders</span>
@@ -1971,6 +1975,7 @@
               </div>
             </div>
 
+            <!-- MENU MGMT -->
             <div class="card">
               <div class="card-title">
                 <span>Menu &amp; Prices</span>
@@ -2092,6 +2097,7 @@
 
   </main>
 
+  <!-- CART BAR -->
   <div id="cartBar" class="cart-bar">
     <div class="cart-bar-info" onclick="navigateTo('cart')">
       <div class="cart-pill">
@@ -2147,6 +2153,7 @@
     setTimeout(() => toast.classList.remove("show"), duration);
   }
 
+  /* THEME */
   const themeKey = "ms_fast_food_theme";
   function applyTheme(theme) {
     document.body.setAttribute("data-theme", theme);
@@ -2164,8 +2171,10 @@
   }
   document.getElementById("themeToggle").addEventListener("click", toggleTheme);
 
+  /* BACKEND BASE URL */
   const API_BASE = "https://ms-fast-food.vercel.app";
 
+  /* MENU DATA */
   const defaultMenuData = {
     "Shawarma": [
       { id: "shawarma-large", name: "Chicken Shawarma (Large)", price: 150, available: true, description: "Big size wrap, full of flavour and juicy chicken.", tags: ["Street Favourite"] },
@@ -2274,6 +2283,7 @@
     });
   }
 
+  /* CART */
   let cart = [];
 
   function addToCart(item) {
@@ -2365,6 +2375,7 @@
     });
   }
 
+  /* GEOLOCATION */
   function getLocation() {
     const statusEl = document.getElementById("locationStatus");
     if (!navigator.geolocation) {
@@ -2391,6 +2402,7 @@
     );
   }
 
+  /* PLACE ORDER – fully wired to backend */
   async function placeOrder() {
     if (!cart.length) {
       showToast("Cart is empty. Add some items first.");
@@ -2453,15 +2465,14 @@
     }
   }
 
+  /* OWNER LOGIN + EXIT */
   const OWNER_USER = "admin-sohail";
   const OWNER_PASS = "724426649";
-  const OWNER_KEY = "ms_fast_food_owner_logged_in";
 
   function ownerLogin() {
     const u = document.getElementById("ownerUsername").value.trim();
     const p = document.getElementById("ownerPassword").value.trim();
     if (u === OWNER_USER && p === OWNER_PASS) {
-      localStorage.setItem(OWNER_KEY, "1");
       showToast("Owner login successful.");
       showOwnerDashboard(true);
       loadOwnerData();
@@ -2476,15 +2487,15 @@
   }
 
   function checkOwnerLoginOnLoad() {
-    const logged = localStorage.getItem(OWNER_KEY) === "1";
-    showOwnerDashboard(logged);
-    if (logged) loadOwnerData();
+    // Always require login when owner page is opened
+    showOwnerDashboard(false);
   }
 
   function exitOwnerPortal() {
     navigateTo("home");
   }
 
+  /* OWNER TABS */
   function switchOwnerTab(which) {
     const tabItems = document.getElementById("tab-menu-items");
     const tabSettings = document.getElementById("tab-menu-settings");
@@ -2504,6 +2515,7 @@
     }
   }
 
+  /* OWNER ORDERS – wired to backend */
   let ownerOrders = [];
 
   async function loadOwnerData() {
@@ -2621,6 +2633,7 @@
     }
   }
 
+  /* OWNER MENU MGMT (synced) */
   function renderOwnerCategorySelect() {
     const select = document.getElementById("ownerCategorySelect");
     select.innerHTML = "";
@@ -2690,7 +2703,6 @@
         renderMenuGrid();
         await saveMenuToServer();
       });
-
       const toggleBtn = row.querySelector('[data-action="toggle"]');
       const renameBtn = row.querySelector('[data-action="rename"]');
       const deleteBtn = row.querySelector('[data-action="delete"]');
@@ -2761,6 +2773,8 @@
     renderCategoryTabs();
     renderMenuGrid();
     updateCartUI();
+    // ensure no old remember-me flag (optional safety)
+    localStorage.removeItem("ms_fast_food_owner_logged_in");
     checkOwnerLoginOnLoad();
   }
 
