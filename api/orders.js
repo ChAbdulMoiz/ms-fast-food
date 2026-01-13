@@ -1,24 +1,47 @@
+export const config = {
+  runtime: "edge",
+};
+
 let orders = [];
 
-export default function handler(req, res) {
-  res.setHeader("Access-Control-Allow-Origin", "*");
-  res.setHeader("Access-Control-Allow-Methods", "GET,POST,PUT,DELETE,OPTIONS");
-  res.setHeader("Access-Control-Allow-Headers", "Content-Type");
+export default async function handler(req) {
+  const { method } = req;
+  const url = new URL(req.url);
+  const id = url.searchParams.get("id");
 
-  if (req.method === "OPTIONS") {
-    return res.status(200).end();
+  const headers = {
+    "Access-Control-Allow-Origin": "*",
+    "Access-Control-Allow-Methods": "GET,POST,PUT,DELETE,OPTIONS",
+    "Access-Control-Allow-Headers": "Content-Type",
+  };
+
+  if (method === "OPTIONS") {
+    return new Response(null, { status: 200, headers });
   }
 
-  if (req.method === "GET") {
-    // Owner portal: get all orders
-    return res.status(200).json(orders);
+  if (method === "GET") {
+    return new Response(JSON.stringify(orders), {
+      status: 200,
+      headers: { ...headers, "Content-Type": "application/json" },
+    });
   }
 
-  if (req.method === "POST") {
-    // New order from customer
-    const body = req.body;
+  if (method === "POST") {
+    let body;
+    try {
+      body = await req.json();
+    } catch {
+      return new Response(JSON.stringify({ error: "Invalid JSON" }), {
+        status: 400,
+        headers: { ...headers, "Content-Type": "application/json" },
+      });
+    }
+
     if (!body || !Array.isArray(body.items)) {
-      return res.status(400).json({ error: "Invalid order payload" });
+      return new Response(JSON.stringify({ error: "Invalid order payload" }), {
+        status: 400,
+        headers: { ...headers, "Content-Type": "application/json" },
+      });
     }
 
     const id = "ord-" + Date.now();
@@ -34,32 +57,69 @@ export default function handler(req, res) {
       items: body.items || [],
       totalAmount: body.totalAmount || 0,
       paymentMethod: body.paymentMethod || "Cash on Delivery",
-      status: body.status || "Pending"
+      status: body.status || "Pending",
     };
 
     orders.unshift(order);
-    return res.status(201).json({ ok: true, id });
+
+    return new Response(JSON.stringify({ ok: true, id }), {
+      status: 201,
+      headers: { ...headers, "Content-Type": "application/json" },
+    });
   }
 
-  if (req.method === "PUT") {
-    const id = req.query.id;
-    if (!id) return res.status(400).json({ error: "Missing id" });
+  if (method === "PUT") {
+    if (!id) {
+      return new Response(JSON.stringify({ error: "Missing id" }), {
+        status: 400,
+        headers: { ...headers, "Content-Type": "application/json" },
+      });
+    }
 
-    const idx = orders.findIndex(o => o.id === id);
-    if (idx === -1) return res.status(404).json({ error: "Order not found" });
+    let body;
+    try {
+      body = await req.json();
+    } catch {
+      return new Response(JSON.stringify({ error: "Invalid JSON" }), {
+        status: 400,
+        headers: { ...headers, "Content-Type": "application/json" },
+      });
+    }
 
-    const update = req.body || {};
-    orders[idx] = { ...orders[idx], ...update };
-    return res.status(200).json({ ok: true });
+    const idx = orders.findIndex((o) => o.id === id);
+    if (idx === -1) {
+      return new Response(JSON.stringify({ error: "Order not found" }), {
+        status: 404,
+        headers: { ...headers, "Content-Type": "application/json" },
+      });
+    }
+
+    orders[idx] = { ...orders[idx], ...body };
+
+    return new Response(JSON.stringify({ ok: true }), {
+      status: 200,
+      headers: { ...headers, "Content-Type": "application/json" },
+    });
   }
 
-  if (req.method === "DELETE") {
-    const id = req.query.id;
-    if (!id) return res.status(400).json({ error: "Missing id" });
+  if (method === "DELETE") {
+    if (!id) {
+      return new Response(JSON.stringify({ error: "Missing id" }), {
+        status: 400,
+        headers: { ...headers, "Content-Type": "application/json" },
+      });
+    }
 
-    orders = orders.filter(o => o.id !== id);
-    return res.status(200).json({ ok: true });
+    orders = orders.filter((o) => o.id !== id);
+
+    return new Response(JSON.stringify({ ok: true }), {
+      status: 200,
+      headers: { ...headers, "Content-Type": "application/json" },
+    });
   }
 
-  return res.status(405).json({ error: "Method not allowed" });
+  return new Response(JSON.stringify({ error: "Method not allowed" }), {
+    status: 405,
+    headers: { ...headers, "Content-Type": "application/json" },
+  });
 }
