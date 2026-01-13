@@ -197,21 +197,23 @@
         display: inline-flex;
       }
     }
-@media (max-width: 480px) {
-  .nav {
-    flex-wrap: wrap;
-  }
 
-  .brand {
-    width: 100%;
-  }
+    @media (max-width: 480px) {
+      .nav {
+        flex-wrap: wrap;
+      }
 
-  .nav-right {
-    width: 100%;
-    justify-content: flex-end;
-    margin-top: 0.4rem;
-  }
-}
+      .brand {
+        width: 100%;
+      }
+
+      .nav-right {
+        width: 100%;
+        justify-content: flex-end;
+        margin-top: 0.4rem;
+      }
+    }
+
     .nav-tag {
       font-size: 0.7rem;
       padding: 0.18rem 0.6rem;
@@ -230,8 +232,6 @@
       color: #a5d6a7;
       border-color: rgba(129,199,132,0.7);
     }
-
-    /* Theme switch: single dot */
 
     .theme-toggle {
       width: 18px;
@@ -448,8 +448,6 @@
       background: rgba(255,255,255,0.4);
     }
 
-    /* HERO CARD (visual) */
-
     .hero-card {
       border-radius: 22px;
       background: radial-gradient(circle at 10% 0, #ffd194 0, #ff4b2b 35%, #2b5876 90%);
@@ -592,8 +590,6 @@
       box-shadow: 0 0 8px #2ecc71;
     }
 
-    /* SECTIONS */
-
     .section {
       margin-top: 1.1rem;
     }
@@ -636,8 +632,6 @@
       color: var(--text-soft);
       max-width: 320px;
     }
-
-    /* MENU */
 
     .category-tabs {
       display: flex;
@@ -841,8 +835,6 @@
       opacity: 0.6;
     }
 
-    /* CART BAR */
-
     .cart-bar {
       position: fixed;
       left: 50%;
@@ -941,8 +933,6 @@
       white-space: nowrap;
       flex-shrink: 0;
     }
-
-    /* CART / CHECKOUT PAGE */
 
     .two-col {
       display: grid;
@@ -1104,8 +1094,6 @@
       line-height: 1.4;
     }
 
-    /* FORM */
-
     .form-grid {
       display: grid;
       grid-template-columns: minmax(0,1fr);
@@ -1241,8 +1229,6 @@
       border-color: rgba(255,255,255,0.18);
     }
 
-    /* STATUS / TOAST */
-
     .status-pill {
       padding: 0.1rem 0.5rem;
       border-radius: 999px;
@@ -1295,8 +1281,6 @@
     .toast.show {
       display: block;
     }
-
-    /* OWNER PORTAL */
 
     .owner-layout {
       display: grid;
@@ -1562,8 +1546,6 @@
       color: var(--text-soft);
     }
 
-    /* CONTACT / FOOTER */
-
     .contact-grid {
       display: grid;
       grid-template-columns: minmax(0,1fr);
@@ -1633,27 +1615,24 @@
   <!-- HEADER -->
   <header>
     <div class="nav">
-         <div class="brand">
+      <div class="brand">
         <div class="brand-logo">MS</div>
-  <a href="https://ms-fast-food.vercel.app" style="text-decoration: none; color: inherit; display: block;">
-    <div>
-    <div class="brand-text-main">MS Fast Food</div>
-    <div class="brand-text-sub">Amazing Taste • Rawalpindi</div>
-  </div>
-</a>
+        <a href="https://ms-fast-food.vercel.app" style="text-decoration: none; color: inherit; display: block;">
+          <div>
+            <div class="brand-text-main">MS Fast Food</div>
+            <div class="brand-text-sub">Amazing Taste • Rawalpindi</div>
+          </div>
+        </a>
       </div>
       <div class="nav-right">
         <button class="nav-btn nav-phone" onclick="window.location.href='tel:03458324187'">
           <span class="icon">📞</span>
           <span>Call Now</span>
         </button>
-
         <div class="nav-tag">
           <span class="icon-sm">🔥</span>
           <span>2PM – 1AM • Mon–Sun</span>
         </div>
-        
-        <!-- OWNER BUTTON: STAR ONLY -->
         <button class="nav-btn" onclick="navigateTo('owner')">
           <span class="icon-sm">⭐</span>
         </button>
@@ -1672,8 +1651,6 @@
 
     <!-- HOME PAGE -->
     <section id="page-home" class="page active">
-
-      <!-- HERO -->
       <section class="hero">
         <div>
           <h1 class="hero-heading">
@@ -1754,7 +1731,6 @@
         </div>
       </section>
 
-      <!-- MENU SECTION -->
       <section id="menuSection" class="section">
         <div class="section-header">
           <div class="section-title">
@@ -1906,7 +1882,6 @@
     <!-- OWNER PORTAL PAGE -->
     <section id="page-owner" class="page">
 
-      <!-- LOGIN -->
       <div id="ownerLoginSection">
         <div class="section">
           <div class="owner-login-box card">
@@ -1943,7 +1918,6 @@
         </div>
       </div>
 
-      <!-- DASHBOARD -->
       <div id="ownerDashboard" style="display:none;">
         <section class="section">
           <div class="section-header">
@@ -1965,7 +1939,6 @@
 
           <div class="owner-layout">
 
-            <!-- ORDERS -->
             <div class="card">
               <div class="card-title">
                 <span>Orders</span>
@@ -1998,7 +1971,6 @@
               </div>
             </div>
 
-            <!-- MENU MGMT -->
             <div class="card">
               <div class="card-title">
                 <span>Menu &amp; Prices</span>
@@ -2049,7 +2021,8 @@
               </div>
 
               <div class="owner-section" id="ownerSettingsSection">
-          
+              </div>
+
             </div>
 
           </div>
@@ -2119,7 +2092,6 @@
 
   </main>
 
-  <!-- CART BAR -->
   <div id="cartBar" class="cart-bar">
     <div class="cart-bar-info" onclick="navigateTo('cart')">
       <div class="cart-pill">
@@ -2175,7 +2147,6 @@
     setTimeout(() => toast.classList.remove("show"), duration);
   }
 
-  /* THEME */
   const themeKey = "ms_fast_food_theme";
   function applyTheme(theme) {
     document.body.setAttribute("data-theme", theme);
@@ -2183,7 +2154,7 @@
   function initTheme() {
     const saved = localStorage.getItem(themeKey);
     if (saved === "light" || saved === "dark") applyTheme(saved);
-    else applyTheme("light"); // default light as requested
+    else applyTheme("light");
   }
   function toggleTheme() {
     const current = document.body.getAttribute("data-theme") || "light";
@@ -2193,10 +2164,8 @@
   }
   document.getElementById("themeToggle").addEventListener("click", toggleTheme);
 
-  /* BACKEND BASE URL */
   const API_BASE = "https://ms-fast-food.vercel.app";
 
-  /* MENU DATA (local for now, can later sync with /api/menu) */
   const defaultMenuData = {
     "Shawarma": [
       { id: "shawarma-large", name: "Chicken Shawarma (Large)", price: 150, available: true, description: "Big size wrap, full of flavour and juicy chicken.", tags: ["Street Favourite"] },
@@ -2217,6 +2186,35 @@
   let menuData = JSON.parse(JSON.stringify(defaultMenuData));
   let categories = Object.keys(menuData);
   let activeCategory = categories[0] || null;
+
+  async function loadMenuFromServer() {
+    try {
+      const res = await fetch(API_BASE + "/api/menu");
+      if (!res.ok) throw new Error("Failed to fetch menu");
+      const data = await res.json();
+      if (!data || typeof data !== "object") throw new Error("Invalid menu data");
+      menuData = data;
+      categories = Object.keys(menuData);
+      activeCategory = categories[0] || null;
+    } catch (e) {
+      console.error("Menu load failed, using defaultMenuData:", e);
+    }
+  }
+
+  async function saveMenuToServer() {
+    try {
+      const res = await fetch(API_BASE + "/api/menu", {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(menuData),
+      });
+      if (!res.ok) throw new Error("Failed to save menu");
+      showToast("Menu saved.");
+    } catch (e) {
+      console.error("Menu save failed:", e);
+      showToast("Could not save menu to server.");
+    }
+  }
 
   function renderCategoryTabs() {
     const container = document.getElementById("categoryTabs");
@@ -2276,7 +2274,6 @@
     });
   }
 
-  /* CART */
   let cart = [];
 
   function addToCart(item) {
@@ -2368,7 +2365,6 @@
     });
   }
 
-  /* GEOLOCATION */
   function getLocation() {
     const statusEl = document.getElementById("locationStatus");
     if (!navigator.geolocation) {
@@ -2395,7 +2391,6 @@
     );
   }
 
-  /* PLACE ORDER – fully wired to backend */
   async function placeOrder() {
     if (!cart.length) {
       showToast("Cart is empty. Add some items first.");
@@ -2458,7 +2453,6 @@
     }
   }
 
-  /* OWNER LOGIN + EXIT */
   const OWNER_USER = "admin-sohail";
   const OWNER_PASS = "724426649";
   const OWNER_KEY = "ms_fast_food_owner_logged_in";
@@ -2491,7 +2485,6 @@
     navigateTo("home");
   }
 
-  /* OWNER TABS */
   function switchOwnerTab(which) {
     const tabItems = document.getElementById("tab-menu-items");
     const tabSettings = document.getElementById("tab-menu-settings");
@@ -2511,7 +2504,6 @@
     }
   }
 
-  /* OWNER ORDERS – wired to backend */
   let ownerOrders = [];
 
   async function loadOwnerData() {
@@ -2629,7 +2621,6 @@
     }
   }
 
-  /* OWNER MENU MGMT (local only for now) */
   function renderOwnerCategorySelect() {
     const select = document.getElementById("ownerCategorySelect");
     select.innerHTML = "";
@@ -2693,46 +2684,47 @@
         </div>
       `;
       const priceInput = row.querySelector(".input-inline");
-      priceInput.addEventListener("change", () => {
+      priceInput.addEventListener("change", async () => {
         const newVal = parseInt(priceInput.value, 10) || 0;
         item.price = newVal;
-        showToast("Price updated (local).");
         renderMenuGrid();
+        await saveMenuToServer();
       });
+
       const toggleBtn = row.querySelector('[data-action="toggle"]');
       const renameBtn = row.querySelector('[data-action="rename"]');
       const deleteBtn = row.querySelector('[data-action="delete"]');
 
-      toggleBtn.addEventListener("click", () => {
+      toggleBtn.addEventListener("click", async () => {
         item.available = !item.available;
-        showToast("Availability changed (local).");
         renderOwnerMenuItems();
         renderMenuGrid();
+        await saveMenuToServer();
       });
 
-      renameBtn.addEventListener("click", () => {
+      renameBtn.addEventListener("click", async () => {
         const newName = prompt("New item name:", item.name);
         if (newName && newName.trim()) {
           item.name = newName.trim();
-          showToast("Item renamed (local).");
           renderOwnerMenuItems();
           renderMenuGrid();
+          await saveMenuToServer();
         }
       });
 
-      deleteBtn.addEventListener("click", () => {
+      deleteBtn.addEventListener("click", async () => {
         if (!confirm("Delete this menu item?")) return;
         menuData[cat].splice(idx, 1);
-        showToast("Item deleted (local).");
         renderOwnerMenuItems();
         renderMenuGrid();
+        await saveMenuToServer();
       });
 
       listEl.appendChild(row);
     });
   }
 
-  function ownerAddItem() {
+  async function ownerAddItem() {
     const cat = getOwnerSelectedCategory();
     if (!cat) {
       showToast("No category selected.");
@@ -2758,13 +2750,14 @@
     menuData[cat].push(newItem);
     nameInput.value = "";
     priceInput.value = "";
-    showToast("New menu item added (local).");
     renderOwnerMenuItems();
     renderMenuGrid();
+    await saveMenuToServer();
   }
 
-  function init() {
+  async function init() {
     initTheme();
+    await loadMenuFromServer();
     renderCategoryTabs();
     renderMenuGrid();
     updateCartUI();
