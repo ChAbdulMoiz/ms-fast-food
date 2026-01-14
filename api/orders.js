@@ -1,29 +1,35 @@
+// api/orders.js
 export const config = {
   runtime: "edge",
 };
 
+// In-memory order store (resets on cold start)
 let orders = [];
+
+function jsonResponse(body, status = 200) {
+  return new Response(JSON.stringify(body), {
+    status,
+    headers: {
+      "Content-Type": "application/json",
+      "Access-Control-Allow-Origin": "*",
+      "Access-Control-Allow-Methods": "GET,POST,PUT,DELETE,OPTIONS",
+      "Access-Control-Allow-Headers": "Content-Type",
+    },
+  });
+}
 
 export default async function handler(req) {
   const { method } = req;
   const url = new URL(req.url);
   const id = url.searchParams.get("id");
 
-  const headers = {
-    "Access-Control-Allow-Origin": "*",
-    "Access-Control-Allow-Methods": "GET,POST,PUT,DELETE,OPTIONS",
-    "Access-Control-Allow-Headers": "Content-Type",
-  };
-
   if (method === "OPTIONS") {
-    return new Response(null, { status: 200, headers });
+    return jsonResponse(null, 200);
   }
 
   if (method === "GET") {
-    return new Response(JSON.stringify(orders), {
-      status: 200,
-      headers: { ...headers, "Content-Type": "application/json" },
-    });
+    // List all orders (latest first, we always unshift)
+    return jsonResponse(orders, 200);
   }
 
   if (method === "POST") {
@@ -31,95 +37,78 @@ export default async function handler(req) {
     try {
       body = await req.json();
     } catch {
-      return new Response(JSON.stringify({ error: "Invalid JSON" }), {
-        status: 400,
-        headers: { ...headers, "Content-Type": "application/json" },
-      });
+      return jsonResponse({ error: "Invalid JSON" }, 400);
     }
 
-    if (!body || !Array.isArray(body.items)) {
-      return new Response(JSON.stringify({ error: "Invalid order payload" }), {
-        status: 400,
-        headers: { ...headers, "Content-Type": "application/json" },
-      });
+    if (!body || typeof body !== "object") {
+      return jsonResponse({ error: "Invalid order data" }, 400);
     }
 
-    const id = "ord-" + Date.now();
+    // Basic extraction with defaults
+    const {
+      customerName = "",
+      customerPhone = "",
+      customerAddress = "",
+      notes = "",
+      lat = null,
+      lng = null,
+      paymentMethod = "Cash on Delivery",
+      items = [],
+      totalAmount = 0,
+      status = "Pending",
+      createdAt,
+    } = body;
+
     const order = {
-      id,
-      createdAt: body.createdAt || new Date().toISOString(),
-      customerName: body.customerName || "",
-      customerPhone: body.customerPhone || "",
-      customerAddress: body.customerAddress || "",
-      notes: body.notes || "",
-      lat: body.lat || null,
-      lng: body.lng || null,
-      items: body.items || [],
-      totalAmount: body.totalAmount || 0,
-      paymentMethod: body.paymentMethod || "Cash on Delivery",
-      status: body.status || "Pending",
+      id: crypto.randomUUID(),
+      customerName: String(customerName),
+      customerPhone: String(customerPhone),
+      customerAddress: String(customerAddress),
+      notes: String(notes),
+      lat: lat === null || lat === undefined || lat === "" ? null : String(lat),
+      lng: lng === null || lng === undefined || lng === "" ? null : String(lng),
+      paymentMethod: String(paymentMethod),
+      items: Array.isArray(items) ? items : [],
+      totalAmount: Number(totalAmount) || 0,
+      status: String(status || "Pending"), // "Pending" or "Confirmed" etc.
+      createdAt: createdAt || new Date().toISOString(),
     };
 
     orders.unshift(order);
-
-    return new Response(JSON.stringify({ ok: true, id }), {
-      status: 201,
-      headers: { ...headers, "Content-Type": "application/json" },
-    });
+    return jsonResponse(order, 201);
   }
 
   if (method === "PUT") {
-    if (!id) {
-      return new Response(JSON.stringify({ error: "Missing id" }), {
-        status: 400,
-        headers: { ...headers, "Content-Type": "application/json" },
-      });
-    }
+    if (!id) return jsonResponse({ error: "Missing id" }, 400);
 
     let body;
     try {
       body = await req.json();
     } catch {
-      return new Response(JSON.stringify({ error: "Invalid JSON" }), {
-        status: 400,
-        headers: { ...headers, "Content-Type": "application/json" },
-      });
+      return jsonResponse({ error: "Invalid JSON" }, 400);
     }
 
-    const idx = orders.findIndex((o) => o.id === id);
-    if (idx === -1) {
-      return new Response(JSON.stringify({ error: "Order not found" }), {
-        status: 404,
-        headers: { ...headers, "Content-Type": "application/json" },
-      });
+    const idx = orders.findIndex(o => o.id === id);
+    if (idx === -1) return jsonResponse({ error: "Order not found" }, 404);
+
+    // For now we only care about status updates from the UI,
+    // but you can extend this if needed.
+    if (body.status) {
+      orders[idx].status = String(body.status);
     }
 
-    orders[idx] = { ...orders[idx], ...body };
-
-    return new Response(JSON.stringify({ ok: true }), {
-      status: 200,
-      headers: { ...headers, "Content-Type": "application/json" },
-    });
+    return jsonResponse({ ok: true, order: orders[idx] }, 200);
   }
 
   if (method === "DELETE") {
-    if (!id) {
-      return new Response(JSON.stringify({ error: "Missing id" }), {
-        status: 400,
-        headers: { ...headers, "Content-Type": "application/json" },
-      });
+    if (!id) return jsonResponse({ error: "Missing id" }, 400);
+    const before = orders.length;
+    orders = orders.filter(o => o.id !== id);
+    if (orders.length === before) {
+      return jsonResponse({ error: "Order not found" }, 404);
     }
-
-    orders = orders.filter((o) => o.id !== id);
-
-    return new Response(JSON.stringify({ ok: true }), {
-      status: 200,
-      headers: { ...headers, "Content-Type": "application/json" },
-    });
+    return jsonResponse({ ok: true }, 200);
   }
 
-  return new Response(JSON.stringify({ error: "Method not allowed" }), {
-    status: 405,
-    headers: { ...headers, "Content-Type": "application/json" },
-  });
+  return jsonResponse({ error: "Method not allowed" }, 405);
 }
