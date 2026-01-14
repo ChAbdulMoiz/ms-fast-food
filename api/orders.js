@@ -44,7 +44,6 @@ export default async function handler(req) {
       return jsonResponse({ error: "Invalid order data" }, 400);
     }
 
-    // Basic extraction with defaults
     const {
       customerName = "",
       customerPhone = "",
@@ -70,7 +69,7 @@ export default async function handler(req) {
       paymentMethod: String(paymentMethod),
       items: Array.isArray(items) ? items : [],
       totalAmount: Number(totalAmount) || 0,
-      status: String(status || "Pending"), // "Pending" or "Confirmed" etc.
+      status: String(status || "Pending"), // "Pending" / "Confirmed"
       createdAt: createdAt || new Date().toISOString(),
     };
 
@@ -91,8 +90,6 @@ export default async function handler(req) {
     const idx = orders.findIndex(o => o.id === id);
     if (idx === -1) return jsonResponse({ error: "Order not found" }, 404);
 
-    // For now we only care about status updates from the UI,
-    // but you can extend this if needed.
     if (body.status) {
       orders[idx].status = String(body.status);
     }
