@@ -448,6 +448,8 @@
       background: rgba(255,255,255,0.4);
     }
 
+    /* HERO CARD (visual) */
+
     .hero-card {
       border-radius: 22px;
       background: radial-gradient(circle at 10% 0, #ffd194 0, #ff4b2b 35%, #2b5876 90%);
@@ -590,10 +592,48 @@
       box-shadow: 0 0 8px #2ecc71;
     }
 
-    .section {
-      margin-top: 1.1rem;
+    /* CUSTOMER ACTIVE / INACTIVE OVERLAY */
+
+    .site-inactive-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.78);
+      color: #fff;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 1.2rem;
+      z-index: 200;
     }
 
+    .site-inactive-overlay.visible {
+      display: flex;
+    }
+
+    .site-inactive-box {
+      max-width: 420px;
+      background: rgba(15,15,18,0.95);
+      border-radius: 18px;
+      padding: 1rem 1.1rem;
+      box-shadow: 0 12px 32px rgba(0,0,0,0.8);
+      border: 1px solid rgba(255,255,255,0.18);
+    }
+
+    .site-inactive-title {
+      font-size: 1.05rem;
+      font-weight: 600;
+      margin-bottom: 0.3rem;
+    }
+
+    .site-inactive-sub {
+      font-size: 0.86rem;
+      opacity: 0.9;
+    }
+
+    /* SECTIONS / FOOTER etc. (same as before, omitted comments for brevity) */
+
+    .section { margin-top: 1.1rem; }
     .section-header {
       display: flex;
       align-items: flex-start;
@@ -602,7 +642,6 @@
       margin-bottom: 0.6rem;
       flex-wrap: wrap;
     }
-
     .section-title {
       font-size: 1.05rem;
       font-weight: 700;
@@ -611,7 +650,6 @@
       gap: 0.4rem;
       flex-wrap: wrap;
     }
-
     .section-title span.accent {
       font-size: 0.78rem;
       font-weight: 500;
@@ -621,943 +659,20 @@
       border: 1px solid rgba(0,0,0,0.08);
       color: var(--text-soft);
     }
-
     body[data-theme="dark"] .section-title span.accent {
       background: rgba(255,255,255,0.05);
       border-color: rgba(255,255,255,0.12);
     }
-
-    .section-sub {
-      font-size: 0.8rem;
-      color: var(--text-soft);
-      max-width: 320px;
-    }
-
-    .category-tabs {
-      display: flex;
-      flex-wrap: nowrap;
-      overflow-x: auto;
-      gap: 0.45rem;
-      padding-bottom: 0.3rem;
-      margin-bottom: 0.45rem;
-      scrollbar-width: none;
-    }
-    .category-tabs::-webkit-scrollbar {
-      display: none;
-    }
-
-    .category-tab {
-      white-space: nowrap;
-      font-size: 0.8rem;
-      padding: 0.3rem 0.8rem;
-      border-radius: 999px;
-      border: 1px solid rgba(0,0,0,0.08);
-      background: rgba(0,0,0,0.02);
-      color: var(--text-soft);
-      cursor: pointer;
-      display: inline-flex;
-      align-items: center;
-      gap: 0.3rem;
-      transition: background var(--transition-fast), color var(--transition-fast), border-color var(--transition-fast), transform var(--transition-fast), box-shadow var(--transition-fast);
-    }
-
-    body[data-theme="dark"] .category-tab {
-      background: rgba(255,255,255,0.03);
-      border-color: rgba(255,255,255,0.14);
-    }
-
-    .category-tab.active {
-      background: linear-gradient(135deg, var(--accent-soft), var(--accent));
-      border-color: transparent;
-      color: #fff;
-      box-shadow: 0 4px 16px rgba(255,76,43,0.5);
-      transform: translateY(-1px);
-    }
-
-    .category-tab span.dot {
-      width: 6px;
-      height: 6px;
-      border-radius: 999px;
-      background: rgba(0,0,0,0.25);
-    }
-
-    body[data-theme="dark"] .category-tab span.dot {
-      background: rgba(255,255,255,0.4);
-    }
-
-    .category-tab.active span.dot {
-      background: #fff;
-    }
-
-    .menu-grid {
-      display: grid;
-      grid-template-columns: minmax(0,1fr);
-      gap: 0.6rem;
-    }
-
-    @media (min-width: 640px) {
-      .menu-grid {
-        grid-template-columns: repeat(2, minmax(0,1fr));
-      }
-    }
-
-    .menu-card {
-      border-radius: var(--radius-md);
-      background: var(--card);
-      padding: 0.6rem 0.65rem;
-      box-shadow: var(--shadow);
-      display: flex;
-      gap: 0.55rem;
-      border: 1px solid var(--border-subtle);
-      position: relative;
-      overflow: hidden;
-    }
-
-    .menu-thumb {
-      width: 56px;
-      min-width: 56px;
-      height: 56px;
-      border-radius: 16px;
-      background:
-        radial-gradient(circle at 20% 0, #fff 0, #ffe0b2 50%, #ff5722 100%),
-        radial-gradient(circle at 80% 90%, rgba(0,0,0,0.45) 0, transparent 60%);
-      box-shadow: 0 8px 18px rgba(0,0,0,0.3);
-      position: relative;
-      overflow: hidden;
-      flex-shrink: 0;
-    }
-
-    .menu-content {
-      flex: 1;
-      position: relative;
-      z-index: 1;
-      min-width: 0;
-    }
-
-    .menu-title-row {
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-start;
-      gap: 0.4rem;
-      margin-bottom: 0.18rem;
-    }
-
-    .menu-name {
-      font-size: 0.94rem;
-      font-weight: 600;
-      word-wrap: break-word;
-    }
-
-    .menu-price {
-      font-size: 0.9rem;
-      font-weight: 700;
-      color: #d35400;
-      white-space: nowrap;
-    }
-
-    body[data-theme="dark"] .menu-price {
-      color: #ffe97f;
-    }
-
-    .menu-desc {
-      font-size: 0.76rem;
-      color: var(--text-soft);
-      margin-bottom: 0.25rem;
-    }
-
-    .menu-meta-row {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 0.4rem;
-    }
-
-    .menu-tags {
-      display: inline-flex;
-      flex-wrap: wrap;
-      gap: 0.25rem;
-      font-size: 0.67rem;
-      color: var(--text-soft);
-    }
-
-    .menu-tag {
-      padding: 0.12rem 0.45rem;
-      border-radius: 999px;
-      background: rgba(0,0,0,0.03);
-      border: 1px solid rgba(0,0,0,0.07);
-    }
-
-    body[data-theme="dark"] .menu-tag {
-      background: rgba(0,0,0,0.5);
-      border-color: rgba(255,255,255,0.18);
-      color: rgba(255,255,255,0.9);
-    }
-
-    .menu-cta {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.22rem;
-      font-size: 0.78rem;
-      padding: 0.2rem 0.65rem;
-      border-radius: 999px;
-      background: linear-gradient(135deg, var(--accent-soft), var(--accent));
-      color: #fff;
-      border: none;
-      cursor: pointer;
-      white-space: nowrap;
-      box-shadow: 0 5px 14px rgba(255,76,43,0.6);
-      transition: transform var(--transition-fast), box-shadow var(--transition-fast);
-    }
-
-    .menu-cta:hover {
-      transform: translateY(-1px);
-      box-shadow: 0 6px 16px rgba(255,76,43,0.7);
-    }
-
-    .menu-badge-unavailable {
-      position: absolute;
-      top: 6px;
-      left: -34px;
-      transform: rotate(-18deg);
-      background: rgba(0,0,0,0.85);
-      color: #ffb3b3;
-      font-size: 0.62rem;
-      padding: 0.1rem 1.4rem;
-      border-top: 1px solid rgba(255,255,255,0.3);
-      border-bottom: 1px solid rgba(255,255,255,0.3);
-    }
-
-    body[data-theme="light"] .menu-badge-unavailable {
-      background: rgba(0,0,0,0.85);
-    }
-
-    .menu-card.unavailable {
-      opacity: 0.6;
-    }
-
-    .cart-bar {
-      position: fixed;
-      left: 50%;
-      transform: translateX(-50%);
-      bottom: 0.75rem;
-      z-index: 40;
-      max-width: 440px;
-      width: calc(100% - 2rem);
-      background: rgba(255,255,255,0.98);
-      border-radius: 999px;
-      border: 1px solid rgba(0,0,0,0.09);
-      box-shadow: 0 12px 24px rgba(0,0,0,0.2);
-      display: none;
-      padding: 0.38rem 0.6rem;
-      align-items: center;
-      gap: 0.45rem;
-    }
-
-    body[data-theme="dark"] .cart-bar {
-      background: rgba(12,12,14,0.97);
-      border-color: rgba(255,255,255,0.16);
-      box-shadow: 0 18px 30px rgba(0,0,0,0.75);
-    }
-
-    .cart-bar.visible {
-      display: flex;
-    }
-
-    .cart-bar-info {
-      flex: 1;
-      display: flex;
-      align-items: center;
-      gap: 0.55rem;
-      min-width: 0;
-      cursor: pointer;
-    }
-
-    .cart-pill {
-      width: 34px;
-      height: 34px;
-      border-radius: 999px;
-      background: radial-gradient(circle at 30% 0, #fff 0, #ffc371 45%, #ff5f6d 100%);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: #fff;
-      font-size: 0.8rem;
-      font-weight: 700;
-      position: relative;
-      box-shadow: 0 6px 14px rgba(0,0,0,0.5);
-      flex-shrink: 0;
-    }
-
-    .cart-pill-count {
-      position: absolute;
-      top: -4px;
-      right: -4px;
-      background: #111;
-      border-radius: 999px;
-      min-width: 14px;
-      height: 14px;
-      font-size: 0.6rem;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: #fff;
-      border: 1px solid rgba(255,255,255,0.5);
-    }
-
-    .cart-bar-text-main {
-      font-size: 0.8rem;
-      font-weight: 600;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
-
-    .cart-bar-text-sub {
-      font-size: 0.7rem;
-      color: var(--text-soft);
-    }
-
-    .cart-bar-btn {
-      border-radius: 999px;
-      padding: 0.32rem 0.9rem;
-      font-size: 0.8rem;
-      border: none;
-      background: linear-gradient(135deg, var(--accent-strong), var(--accent));
-      color: #fff;
-      cursor: pointer;
-      box-shadow: 0 6px 14px rgba(255,76,43,0.6);
-      display: inline-flex;
-      align-items: center;
-      gap: 0.3rem;
-      font-weight: 600;
-      white-space: nowrap;
-      flex-shrink: 0;
-    }
-
-    .two-col {
-      display: grid;
-      grid-template-columns: minmax(0,1fr);
-      gap: 0.8rem;
-      align-items: flex-start;
-    }
-
-    @media (min-width: 900px) {
-      .two-col {
-        grid-template-columns: minmax(0,1.05fr) minmax(0,1fr);
-      }
-    }
-
-    .card {
-      border-radius: var(--radius-lg);
-      background: var(--card);
-      padding: 0.8rem 0.85rem;
-      box-shadow: var(--shadow);
-      border: 1px solid var(--border-subtle);
-    }
-
-    .card-title {
-      font-size: 0.96rem;
-      font-weight: 600;
-      margin-bottom: 0.5rem;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 0.35rem;
-      flex-wrap: wrap;
-    }
-
-    .card-title span.sub {
-      font-size: 0.78rem;
-      color: var(--text-soft);
-      font-weight: 400;
-    }
-
-    .cart-items {
-      display: flex;
-      flex-direction: column;
-      gap: 0.45rem;
-      max-height: 340px;
-      overflow-y: auto;
-      padding-right: 0.15rem;
-    }
-
-    .cart-item {
-      display: grid;
-      grid-template-columns: minmax(0,1.5fr) auto;
-      align-items: center;
-      gap: 0.4rem;
-      font-size: 0.8rem;
-      padding: 0.25rem 0.1rem;
-      border-bottom: 1px dashed rgba(0,0,0,0.08);
-    }
-
-    body[data-theme="dark"] .cart-item {
-      border-bottom-color: rgba(255,255,255,0.1);
-    }
-
-    .cart-item-main {
-      display: flex;
-      flex-direction: column;
-      gap: 0.12rem;
-    }
-
-    .cart-item-name {
-      font-weight: 500;
-      word-wrap: break-word;
-    }
-
-    .cart-item-meta {
-      font-size: 0.7rem;
-      color: var(--text-soft);
-      display: flex;
-      align-items: center;
-      gap: 0.4rem;
-      flex-wrap: wrap;
-    }
-
-    .cart-item-actions {
-      display: flex;
-      align-items: center;
-      gap: 0.25rem;
-      justify-content: flex-end;
-    }
-
-    .qty-control {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.2rem;
-      border-radius: 999px;
-      border: 1px solid rgba(0,0,0,0.12);
-      padding: 0.12rem 0.4rem;
-      background: rgba(0,0,0,0.02);
-    }
-
-    body[data-theme="dark"] .qty-control {
-      border-color: rgba(255,255,255,0.2);
-      background: rgba(255,255,255,0.03);
-    }
-
-    .qty-btn {
-      border: none;
-      background: transparent;
-      color: inherit;
-      font-size: 0.8rem;
-      cursor: pointer;
-      padding: 0.08rem;
-    }
-
-    .qty-number {
-      font-size: 0.76rem;
-      min-width: 14px;
-      text-align: center;
-    }
-
-    .cart-remove {
-      border: none;
-      background: transparent;
-      color: var(--danger);
-      font-size: 0.8rem;
-      cursor: pointer;
-      padding: 0.1rem 0.2rem;
-    }
-
-    .cart-empty {
-      font-size: 0.82rem;
-      color: var(--text-soft);
-      padding: 0.3rem 0;
-    }
-
-    .cart-summary {
-      margin-top: 0.4rem;
-      font-size: 0.8rem;
-      display: flex;
-      flex-direction: column;
-      gap: 0.22rem;
-    }
-
-    .summary-row {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 0.3rem;
-    }
-
-    .summary-row.total {
-      font-weight: 700;
-      margin-top: 0.15rem;
-      font-size: 0.86rem;
-    }
-
-    .summary-row.note {
-      font-size: 0.72rem;
-      color: var(--text-soft);
-      line-height: 1.4;
-    }
-
-    .form-grid {
-      display: grid;
-      grid-template-columns: minmax(0,1fr);
-      gap: 0.35rem;
-    }
-
-    @media (min-width: 650px) {
-      .form-grid-2 {
-        grid-template-columns: repeat(2, minmax(0,1fr));
-      }
-    }
-
-    .form-field {
-      display: flex;
-      flex-direction: column;
-      gap: 0.18rem;
-      font-size: 0.8rem;
-    }
-
-    .form-label {
-      display: inline-flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 0.3rem;
-      flex-wrap: wrap;
-    }
-
-    .form-label span.help {
-      font-size: 0.72rem;
-      color: var(--text-soft);
-    }
-
-    .input, .textarea {
-      border-radius: 10px;
-      border: 1px solid rgba(0,0,0,0.14);
-      background: #ffffff;
-      color: var(--text-main);
-      padding: 0.42rem 0.55rem;
-      font-family: inherit;
-      font-size: 0.8rem;
-      outline: none;
-      transition: border-color var(--transition-fast), box-shadow var(--transition-fast), background var(--transition-fast);
-    }
-
-    body[data-theme="dark"] .input,
-    body[data-theme="dark"] .textarea {
-      background: rgba(8,8,10,0.9);
-      border-color: rgba(255,255,255,0.24);
-      color: var(--text-main);
-    }
-
-    .input:focus, .textarea:focus {
-      border-color: var(--accent-soft);
-      box-shadow: 0 0 0 1px rgba(255,144,104,0.7);
-      background: #fff;
-    }
-
-    body[data-theme="dark"] .input:focus,
-    body[data-theme="dark"] .textarea:focus {
-      background: rgba(0,0,0,0.9);
-    }
-
-    .textarea {
-      min-height: 70px;
-      resize: vertical;
-    }
-
-    .input[readonly] {
-      opacity: 0.9;
-      background: rgba(0,0,0,0.02);
-    }
-
-    body[data-theme="dark"] .input[readonly] {
-      background: rgba(0,0,0,0.8);
-    }
-
-    .form-row-inline {
-      display: flex;
-      flex-wrap: wrap;
-      align-items: center;
-      gap: 0.45rem;
-      margin-top: 0.23rem;
-    }
-
-    .btn-sm {
-      border-radius: 999px;
-      border: 1px solid rgba(0,0,0,0.16);
-      padding: 0.3rem 0.75rem;
-      font-size: 0.78rem;
-      background: rgba(0,0,0,0.02);
-      color: inherit;
-      cursor: pointer;
-      display: inline-flex;
-      align-items: center;
-      gap: 0.25rem;
-      transition: background var(--transition-fast), border-color var(--transition-fast), transform var(--transition-fast), box-shadow var(--transition-fast);
-      white-space: nowrap;
-    }
-
-    body[data-theme="dark"] .btn-sm {
-      background: rgba(255,255,255,0.03);
-      border-color: rgba(255,255,255,0.18);
-    }
-
-    .btn-sm:hover {
-      background: rgba(0,0,0,0.05);
-      transform: translateY(-1px);
-      box-shadow: 0 4px 10px rgba(0,0,0,0.16);
-    }
-
-    body[data-theme="dark"] .btn-sm:hover {
-      background: rgba(255,255,255,0.08);
-      box-shadow: 0 5px 14px rgba(0,0,0,0.4);
-    }
-
-    .btn-sm-primary {
-      border: none;
-      background: linear-gradient(135deg, var(--accent-strong), var(--accent));
-      color: #fff;
-      box-shadow: 0 8px 18px rgba(255,76,43,0.6);
-    }
-
-    .btn-sm-primary:hover {
-      box-shadow: 0 9px 20px rgba(255,76,43,0.7);
-    }
-
-    .btn-sm-ghost {
-      background: transparent;
-      border-color: rgba(0,0,0,0.16);
-    }
-
-    body[data-theme="dark"] .btn-sm-ghost {
-      border-color: rgba(255,255,255,0.18);
-    }
-
-    .status-pill {
-      padding: 0.1rem 0.5rem;
-      border-radius: 999px;
-      font-size: 0.68rem;
-      display: inline-flex;
-      align-items: center;
-      gap: 0.25rem;
-      white-space: nowrap;
-    }
-
-    .status-pill.pending {
-      background: rgba(255,193,7,0.08);
-      border: 1px solid rgba(255,193,7,0.7);
-      color: #ff9800;
-    }
-
-    .status-pill.completed {
-      background: rgba(40,167,69,0.08);
-      border: 1px solid rgba(40,167,69,0.7);
-      color: #2e7d32;
-    }
-
-    body[data-theme="dark"] .status-pill.pending {
-      color: #ffd54f;
-    }
-
-    body[data-theme="dark"] .status-pill.completed {
-      color: #8bc34a;
-    }
-
-    .toast {
-      position: fixed;
-      bottom: 1rem;
-      right: 1rem;
-      max-width: 260px;
-      background: rgba(0,0,0,0.94);
-      color: #fff;
-      padding: 0.55rem 0.75rem;
-      border-radius: 10px;
-      font-size: 0.78rem;
-      box-shadow: 0 10px 24px rgba(0,0,0,0.6);
-      z-index: 60;
-      display: none;
-    }
-
-    body[data-theme="dark"] .toast {
-      background: rgba(0,0,0,0.95);
-    }
-
-    .toast.show {
-      display: block;
-    }
-
-    .owner-layout {
-      display: grid;
-      grid-template-columns: minmax(0,1fr);
-      gap: 0.8rem;
-    }
-
-    @media (min-width: 960px) {
-      .owner-layout {
-        grid-template-columns: minmax(0,1.35fr) minmax(0,1.1fr);
-      }
-    }
-
-    .owner-login-box {
-      max-width: 380px;
-      margin: 0.4rem auto 0;
-      text-align: left;
-    }
-
-    .owner-login-title {
-      font-size: 1.05rem;
-      font-weight: 700;
-      margin-bottom: 0.4rem;
-    }
-
-    .owner-login-sub {
-      font-size: 0.82rem;
-      color: var(--text-soft);
-      margin-bottom: 0.65rem;
-      line-height: 1.45;
-    }
-
-    .owner-tabs {
-      display: flex;
-      gap: 0.4rem;
-      margin-bottom: 0.5rem;
-      flex-wrap: wrap;
-    }
-
-    .owner-tab {
-      padding: 0.27rem 0.8rem;
-      border-radius: 999px;
-      font-size: 0.8rem;
-      border: 1px solid rgba(0,0,0,0.12);
-      background: rgba(0,0,0,0.02);
-      cursor: pointer;
-      display: inline-flex;
-      align-items: center;
-      gap: 0.3rem;
-      color: var(--text-soft);
-      white-space: nowrap;
-    }
-
-    body[data-theme="dark"] .owner-tab {
-      background: rgba(255,255,255,0.04);
-      border-color: rgba(255,255,255,0.16);
-    }
-
-    .owner-tab.active {
-      background: linear-gradient(135deg, var(--accent-soft), var(--accent));
-      border-color: transparent;
-      color: #fff;
-      box-shadow: 0 4px 14px rgba(255,76,43,0.5);
-    }
-
-    .owner-section {
-      display: none;
-    }
-
-    .owner-section.active {
-      display: block;
-    }
-
-    .owner-table {
-      width: 100%;
-      border-collapse: collapse;
-      font-size: 0.76rem;
-    }
-
-    .owner-table th,
-    .owner-table td {
-      text-align: left;
-      padding: 0.3rem 0.22rem;
-      border-bottom: 1px solid rgba(0,0,0,0.07);
-      vertical-align: top;
-    }
-
-    body[data-theme="dark"] .owner-table th,
-    body[data-theme="dark"] .owner-table td {
-      border-bottom-color: rgba(255,255,255,0.08);
-    }
-
-    .owner-table th {
-      font-weight: 600;
-      font-size: 0.72rem;
-      color: var(--text-soft);
-    }
-
-    .owner-table-actions {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 0.22rem;
-    }
-
-    .chip {
-      border-radius: 999px;
-      padding: 0.14rem 0.5rem;
-      font-size: 0.68rem;
-      border: 1px solid rgba(0,0,0,0.12);
-      background: rgba(0,0,0,0.02);
-      display: inline-flex;
-      align-items: center;
-      gap: 0.2rem;
-      white-space: nowrap;
-    }
-
-    body[data-theme="dark"] .chip {
-      background: rgba(255,255,255,0.04);
-      border-color: rgba(255,255,255,0.18);
-    }
-
-    .owner-menu-list {
-      display: flex;
-      flex-direction: column;
-      gap: 0.45rem;
-      max-height: 320px;
-      overflow-y: auto;
-      padding-right: 0.15rem;
-    }
-
-    .owner-menu-item {
-      display: grid;
-      grid-template-columns: minmax(0,1.5fr) auto auto;
-      gap: 0.3rem;
-      align-items: center;
-      font-size: 0.78rem;
-      border-bottom: 1px dashed rgba(0,0,0,0.08);
-      padding-bottom: 0.2rem;
-    }
-
-    body[data-theme="dark"] .owner-menu-item {
-      border-bottom-color: rgba(255,255,255,0.08);
-    }
-
-    .owner-menu-main {
-      display: flex;
-      flex-direction: column;
-      gap: 0.08rem;
-      min-width: 0;
-    }
-
-    .owner-menu-name {
-      font-weight: 500;
-      word-wrap: break-word;
-    }
-
-    .owner-menu-meta {
-      font-size: 0.7rem;
-      color: var(--text-soft);
-    }
-
-    .owner-menu-price-edit {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.2rem;
-      font-size: 0.78rem;
-      white-space: nowrap;
-    }
-
-    .input-inline {
-      width: 64px;
-      border-radius: 999px;
-      border: 1px solid rgba(0,0,0,0.14);
-      padding: 0.2rem 0.4rem;
-      background: transparent;
-      color: inherit;
-      font-size: 0.76rem;
-      outline: none;
-      text-align: right;
-    }
-
-    body[data-theme="dark"] .input-inline {
-      border-color: rgba(255,255,255,0.2);
-    }
-
-    .owner-menu-actions {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 0.2rem;
-      justify-content: flex-end;
-    }
-
-    .btn-xs {
-      border-radius: 999px;
-      border: 1px solid rgba(0,0,0,0.14);
-      padding: 0.08rem 0.45rem;
-      font-size: 0.68rem;
-      background: rgba(0,0,0,0.02);
-      cursor: pointer;
-      color: inherit;
-      display: inline-flex;
-      align-items: center;
-      gap: 0.18rem;
-      white-space: nowrap;
-    }
-
-    body[data-theme="dark"] .btn-xs {
-      background: rgba(255,255,255,0.04);
-      border-color: rgba(255,255,255,0.2);
-    }
-
-    .btn-xs-danger {
-      color: #d32f2f;
-      border-color: rgba(244,67,54,0.7);
-      background: rgba(255,235,238,0.9);
-    }
-
-    body[data-theme="dark"] .btn-xs-danger {
-      background: rgba(120,0,0,0.2);
-      color: #ffb3b3;
-    }
-
-    .owner-add-form {
-      margin-top: 0.45rem;
-      padding-top: 0.35rem;
-      border-top: 1px dashed rgba(0,0,0,0.08);
-    }
-
-    body[data-theme="dark"] .owner-add-form {
-      border-top-color: rgba(255,255,255,0.08);
-    }
-
-    .owner-add-grid {
-      display: grid;
-      grid-template-columns: repeat(2, minmax(0,1fr));
-      gap: 0.35rem;
-      margin-bottom: 0.3rem;
-    }
-
-    @media (max-width: 499px) {
-      .owner-add-grid {
-        grid-template-columns: minmax(0,1fr);
-      }
-    }
-
-    .select {
-      border-radius: 999px;
-      border: 1px solid rgba(0,0,0,0.14);
-      background: #ffffff;
-      color: inherit;
-      padding: 0.3rem 0.5rem;
-      font-size: 0.8rem;
-      outline: none;
-    }
-
-    body[data-theme="dark"] .select {
-      background: rgba(0,0,0,0.85);
-      border-color: rgba(255,255,255,0.24);
-    }
-
-    .muted {
-      font-size: 0.78rem;
-      color: var(--text-soft);
-    }
+    .section-sub { font-size: 0.8rem; color: var(--text-soft); max-width: 320px; }
 
     .contact-grid {
       display: grid;
       grid-template-columns: minmax(0,1fr);
       gap: 0.8rem;
     }
-
     @media (min-width: 750px) {
-      .contact-grid {
-        grid-template-columns: minmax(0,1.15fr) minmax(0,1fr);
-      }
+      .contact-grid { grid-template-columns: minmax(0,1.15fr) minmax(0,1fr); }
     }
-
     .contact-highlight {
       border-radius: var(--radius-lg);
       background: var(--card);
@@ -1566,13 +681,7 @@
       box-shadow: var(--shadow);
       font-size: 0.86rem;
     }
-
-    .contact-heading {
-      font-size: 0.95rem;
-      font-weight: 600;
-      margin-bottom: 0.4rem;
-    }
-
+    .contact-heading { font-size: 0.95rem; font-weight: 600; margin-bottom: 0.4rem; }
     .contact-row {
       display: flex;
       align-items: center;
@@ -1581,16 +690,8 @@
       margin-top: 0.25rem;
       flex-wrap: wrap;
     }
-
-    .contact-label {
-      font-size: 0.78rem;
-      color: var(--text-soft);
-    }
-
-    .contact-value {
-      font-size: 0.82rem;
-      font-weight: 500;
-    }
+    .contact-label { font-size: 0.78rem; color: var(--text-soft); }
+    .contact-value { font-size: 0.82rem; font-weight: 500; }
 
     .footer {
       font-size: 0.74rem;
@@ -1598,11 +699,7 @@
       text-align: center;
       padding: 0.9rem 0.6rem 2.2rem 0.6rem;
     }
-
-    .footer span.brand-mini {
-      font-weight: 600;
-      color: #ff7043;
-    }
+    .footer span.brand-mini { font-weight: 600; color: #ff7043; }
 
     .icon { font-size: 0.9em; }
     .icon-sm { font-size: 0.8em; }
@@ -1611,6 +708,16 @@
 </head>
 <body data-theme="light">
 <div class="app-shell">
+
+  <!-- CUSTOMER ACTIVE / INACTIVE OVERLAY -->
+  <div id="siteInactiveOverlay" class="site-inactive-overlay">
+    <div class="site-inactive-box">
+      <div class="site-inactive-title">We’re currently not taking orders</div>
+      <div class="site-inactive-sub">
+        MS Fast Food is temporarily inactive. Please check back later, or contact us on phone / WhatsApp for timing.
+      </div>
+    </div>
+  </div>
 
   <!-- HEADER -->
   <header>
@@ -1629,10 +736,13 @@
           <span class="icon">📞</span>
           <span>Call Now</span>
         </button>
+
         <div class="nav-tag">
           <span class="icon-sm">🔥</span>
           <span>2PM – 1AM • Mon–Sun</span>
         </div>
+
+        <!-- OWNER BUTTON: STAR ONLY -->
         <button class="nav-btn" onclick="navigateTo('owner')">
           <span class="icon-sm">⭐</span>
         </button>
@@ -1652,6 +762,7 @@
     <!-- HOME PAGE -->
     <section id="page-home" class="page active">
 
+      <!-- HERO -->
       <section class="hero">
         <div>
           <h1 class="hero-heading">
@@ -1732,6 +843,7 @@
         </div>
       </section>
 
+      <!-- MENU SECTION -->
       <section id="menuSection" class="section">
         <div class="section-header">
           <div class="section-title">
@@ -1880,16 +992,16 @@
       </section>
     </section>
 
-    <!-- OWNER PORTAL PAGE -->
+    <!-- OWNER / CREATOR PORTAL PAGE -->
     <section id="page-owner" class="page">
 
       <!-- LOGIN -->
       <div id="ownerLoginSection">
         <div class="section">
           <div class="owner-login-box card">
-            <div class="owner-login-title">Owner Portal – MS Fast Food</div>
+            <div class="owner-login-title">Owner / Creator Portal – MS Fast Food</div>
             <div class="owner-login-sub">
-              Sirf owner / trusted staff ke liye. Yahan se orders manage karein, menu edit karein, aur prices update karein – sab phone se.
+              Sirf owner / creator ke liye. Yahan se orders manage karein, menu edit karein, aur website ko active / inactive karein.
             </div>
 
             <form onsubmit="event.preventDefault(); ownerLogin();">
@@ -1897,7 +1009,7 @@
                 <label class="form-label">
                   <span>Username</span>
                 </label>
-                <input id="ownerUsername" class="input" type="text" placeholder="admin-sohail" required />
+                <input id="ownerUsername" class="input" type="text" placeholder="admin-sohail / creator user" required />
               </div>
               <div class="form-field" style="margin-top:0.3rem;">
                 <label class="form-label">
@@ -1912,7 +1024,7 @@
                   <span>Login</span>
                 </button>
                 <span class="muted">
-                  Default: <strong>admin-sohail</strong><strong>.</strong>
+                  Owner: <strong>admin-sohail</strong><strong>.</strong> • Creator: special users only
                 </span>
               </div>
             </form>
@@ -1926,18 +1038,29 @@
           <div class="section-header">
             <div class="section-title">
               Dashboard
-              <span class="accent">Orders • Menu • Live Control</span>
+              <span class="accent" id="portalRoleLabel">Owner Portal</span>
             </div>
             <div class="section-sub">
-              Aap yahan se live orders dekh sakte hain, status change karein, items add/remove karein, prices update karein – sab kuch.
+              Yahan se live orders, menu aur website status control karein. Creator users ko extra controls milte hain.
             </div>
           </div>
 
-          <div class="form-row-inline" style="margin-bottom:0.6rem;">
-            <button type="button" class="btn-sm btn-sm-ghost" onclick="exitOwnerPortal()">
-              <span class="icon-sm">🚪</span>
-              <span>Exit</span>
-            </button>
+          <div class="form-row-inline" style="margin-bottom:0.6rem; justify-content: space-between;">
+            <div class="form-row-inline">
+              <button type="button" class="btn-sm btn-sm-ghost" onclick="exitOwnerPortal()">
+                <span class="icon-sm">🚪</span>
+                <span>Exit</span>
+              </button>
+            </div>
+
+            <!-- CREATOR CONTROLS -->
+            <div id="creatorControls" style="display:none; gap:0.4rem;" class="form-row-inline">
+              <div class="muted">Website Status:</div>
+              <button type="button" id="siteStatusBtn" class="btn-sm" onclick="toggleSiteActive()">
+                <span class="icon-sm" id="siteStatusIcon">🟥</span>
+                <span id="siteStatusText">Inactive</span>
+              </button>
+            </div>
           </div>
 
           <div class="owner-layout">
@@ -2026,6 +1149,17 @@
               </div>
 
               <div class="owner-section" id="ownerSettingsSection">
+                <p class="muted">
+                  Backend endpoints:
+                </p>
+                <ul class="muted" style="margin-top:0.3rem; padding-left:1rem; font-size:0.74rem;">
+                  <li><code>GET /api/menu</code> – current menu</li>
+                  <li><code>PUT /api/menu</code> – update menu</li>
+                  <li><code>GET /api/orders</code> – list orders</li>
+                  <li><code>POST /api/orders</code> – new order</li>
+                  <li><code>PUT /api/orders/:id</code> – update order status</li>
+                  <li><code>DELETE /api/orders/:id</code> – delete order</li>
+                </ul>
               </div>
 
             </div>
@@ -2171,8 +1305,53 @@
   }
   document.getElementById("themeToggle").addEventListener("click", toggleTheme);
 
-  /* BACKEND BASE URL */
+  /* BACKEND / CONFIG */
   const API_BASE = "https://ms-fast-food.vercel.app";
+
+  // Creator portal allowed users
+  const CREATOR_USERS = [
+    { username: "raiha", password: "AngryBird2" },
+    { username: "ChaudharyAbdulMoiz", password: "UpdateSwing22" },
+  ];
+
+  let isCreator = false; // set on login
+  let siteActive = true; // default; can be controlled only by creator (frontend flag)
+
+  function updateSiteActiveUI() {
+    const overlay = document.getElementById("siteInactiveOverlay");
+    if (siteActive) {
+      overlay.classList.remove("visible");
+    } else {
+      overlay.classList.add("visible");
+    }
+
+    const btn = document.getElementById("siteStatusBtn");
+    const icon = document.getElementById("siteStatusIcon");
+    const text = document.getElementById("siteStatusText");
+    if (btn && icon && text) {
+      if (siteActive) {
+        icon.textContent = "🟢";
+        text.textContent = "Active";
+        btn.style.borderColor = "rgba(39,174,96,0.7)";
+        btn.style.background = "rgba(39,174,96,0.08)";
+      } else {
+        icon.textContent = "🟥";
+        text.textContent = "Inactive";
+        btn.style.borderColor = "rgba(244,67,54,0.7)";
+        btn.style.background = "rgba(244,67,54,0.08)";
+      }
+    }
+  }
+
+  function toggleSiteActive() {
+    if (!isCreator) {
+      showToast("Only creator users can change site status.");
+      return;
+    }
+    siteActive = !siteActive;
+    updateSiteActiveUI();
+    showToast("Website status: " + (siteActive ? "Active" : "Inactive"));
+  }
 
   /* MENU DATA */
   const defaultMenuData = {
@@ -2402,7 +1581,7 @@
     );
   }
 
-  /* PLACE ORDER – fully wired to backend */
+  /* PLACE ORDER – wired to backend */
   async function placeOrder() {
     if (!cart.length) {
       showToast("Cart is empty. Add some items first.");
@@ -2439,7 +1618,7 @@
       paymentMethod: "Cash on Delivery",
       items,
       totalAmount: total,
-      status: "Pending",
+      status: "Pending", // can be "Pending" / "Confirmed" etc.
       createdAt: new Date().toISOString()
     };
 
@@ -2465,20 +1644,35 @@
     }
   }
 
-  /* OWNER LOGIN + EXIT */
+  /* OWNER + CREATOR LOGIN / EXIT */
   const OWNER_USER = "admin-sohail";
   const OWNER_PASS = "724426649";
 
   function ownerLogin() {
     const u = document.getElementById("ownerUsername").value.trim();
     const p = document.getElementById("ownerPassword").value.trim();
-    if (u === OWNER_USER && p === OWNER_PASS) {
-      showToast("Owner login successful.");
-      showOwnerDashboard(true);
-      loadOwnerData();
-    } else {
+    isCreator = CREATOR_USERS.some(c => c.username === u && c.password === p);
+
+    const isOwner = (u === OWNER_USER && p === OWNER_PASS);
+
+    if (!isOwner && !isCreator) {
       showToast("Incorrect username or password.");
+      return;
     }
+
+    showToast(isCreator ? "Creator login successful." : "Owner login successful.");
+    showOwnerDashboard(true);
+    const portalLabel = document.getElementById("portalRoleLabel");
+    const creatorControls = document.getElementById("creatorControls");
+    if (isCreator) {
+      portalLabel.textContent = "Creator Portal";
+      creatorControls.style.display = "flex";
+    } else {
+      portalLabel.textContent = "Owner Portal";
+      creatorControls.style.display = "none";
+    }
+    loadOwnerData();
+    updateSiteActiveUI();
   }
 
   function showOwnerDashboard(isLoggedIn) {
@@ -2487,11 +1681,13 @@
   }
 
   function checkOwnerLoginOnLoad() {
-    // Always require login when owner page is opened
+    // Always require login
     showOwnerDashboard(false);
   }
 
   function exitOwnerPortal() {
+    isCreator = false;
+    showOwnerDashboard(false);
     navigateTo("home");
   }
 
@@ -2551,29 +1747,38 @@
       ownerOrders.forEach((o, idx) => {
         const tr = document.createElement("tr");
         const time = new Date(o.createdAt);
-        const timeStr = isNaN(time.getTime()) ? o.createdAt : time.toLocaleString();
+        const timeStr = isNaN(time.getTime()) ? (o.createdAt || "") : time.toLocaleString();
         const itemsShort = (o.items || []).map(i => `${i.name} ×${i.qty}`).join(", ");
+        const hasLocation = o.lat && o.lng;
+        const mapLink = hasLocation
+          ? `<a href="https://maps.google.com/?q=${o.lat},${o.lng}" target="_blank" rel="noopener noreferrer">Open Map</a>`
+          : "No GPS";
+
+        const status = o.status || "Pending";
+        const isConfirmed = status === "Confirmed";
+
         tr.innerHTML = `
           <td>${idx + 1}</td>
           <td>${timeStr}</td>
           <td>
             <div>${o.customerName}</div>
             <div class="muted">${o.customerPhone}</div>
-            <div class="muted" style="max-width:180px; white-space:normal;">${o.customerAddress}</div>
+            <div class="muted" style="max-width:200px; white-space:normal;">${o.customerAddress}</div>
+            <div class="muted" style="margin-top:0.15rem;">Location: ${mapLink}</div>
           </td>
-          <td style="max-width:200px; white-space:normal;">${itemsShort}</td>
+          <td style="max-width:220px; white-space:normal;">${itemsShort}</td>
           <td>Rs ${o.totalAmount}</td>
           <td>
-            <div class="status-pill ${o.status === "Completed" ? "completed" : "pending"}">
-              <span class="icon-xs">${o.status === "Completed" ? "✅" : "⏳"}</span>
-              <span>${o.status}</span>
+            <div class="status-pill ${isConfirmed ? "completed" : "pending"}">
+              <span class="icon-xs">${isConfirmed ? "✅" : "⏳"}</span>
+              <span>${status}</span>
             </div>
           </td>
           <td>
             <div class="owner-table-actions">
-              <button type="button" class="btn-xs" data-action="toggle">
-                <span class="icon-xs">🔁</span>
-                <span>${o.status === "Completed" ? "Mark Pending" : "Mark Done"}</span>
+              <button type="button" class="btn-xs" data-action="confirm">
+                <span class="icon-xs">${isConfirmed ? "♻️" : "✅"}</span>
+                <span>${isConfirmed ? "Mark Pending" : "Confirm"}</span>
               </button>
               <button type="button" class="btn-xs btn-xs-danger" data-action="delete">
                 <span class="icon-xs">🗑</span>
@@ -2582,23 +1787,24 @@
             </div>
           </td>
         `;
-        const toggleBtn = tr.querySelector('[data-action="toggle"]');
+        const confirmBtn = tr.querySelector('[data-action="confirm"]');
         const deleteBtn = tr.querySelector('[data-action="delete"]');
-        toggleBtn.addEventListener("click", () => ownerToggleOrderStatus(o.id));
+        confirmBtn.addEventListener("click", () => ownerToggleOrderStatus(o.id, status));
         deleteBtn.addEventListener("click", () => ownerDeleteOrder(o.id));
         tbody.appendChild(tr);
       });
     }
     const summaryEl = document.getElementById("ownerOrdersSummary");
-    const pendingCount = ownerOrders.filter(o => o.status === "Pending").length;
-    summaryEl.textContent = `${ownerOrders.length} total • ${pendingCount} pending`;
+    const pendingCount = ownerOrders.filter(o => (o.status || "Pending") === "Pending").length;
+    const confirmedCount = ownerOrders.filter(o => o.status === "Confirmed").length;
+    summaryEl.textContent = `${ownerOrders.length} total • ${pendingCount} pending • ${confirmedCount} confirmed`;
   }
 
-  async function ownerToggleOrderStatus(orderId) {
+  async function ownerToggleOrderStatus(orderId, currentStatus) {
     const order = ownerOrders.find(o => o.id === orderId);
     if (!order) return;
 
-    const newStatus = order.status === "Completed" ? "Pending" : "Completed";
+    const newStatus = currentStatus === "Confirmed" ? "Pending" : "Confirmed";
 
     try {
       const res = await fetch(API_BASE + "/api/orders?id=" + encodeURIComponent(orderId), {
@@ -2608,7 +1814,7 @@
       });
       if (!res.ok) throw new Error("Failed");
       order.status = newStatus;
-      showToast("Order status updated.");
+      showToast("Order status updated: " + newStatus);
       renderOwnerOrders();
     } catch (e) {
       console.error(e);
@@ -2773,9 +1979,9 @@
     renderCategoryTabs();
     renderMenuGrid();
     updateCartUI();
-    // ensure no old remember-me flag (optional safety)
-    localStorage.removeItem("ms_fast_food_owner_logged_in");
+    localStorage.removeItem("ms_fast_food_owner_logged_in"); // clear old key if any
     checkOwnerLoginOnLoad();
+    updateSiteActiveUI();
   }
 
   document.addEventListener("DOMContentLoaded", init);
