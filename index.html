@@ -1646,6 +1646,24 @@
     .icon { font-size: 0.9em; }
     .icon-sm { font-size: 0.8em; }
     .icon-xs { font-size: 0.7em; }
+
+    /* DAILY SALES BADGE (NEW) */
+    .daily-sales-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.25rem;
+      padding: 0.18rem 0.6rem;
+      border-radius: 999px;
+      background: rgba(39,174,96,0.08);
+      border: 1px solid rgba(39,174,96,0.5);
+      font-size: 0.7rem;
+      white-space: nowrap;
+    }
+
+    body[data-theme="dark"] .daily-sales-badge {
+      background: rgba(39,174,96,0.16);
+      border-color: rgba(129,199,132,0.7);
+    }
   </style>
 </head>
 <body data-theme="light">
@@ -1787,7 +1805,7 @@
             Menu
             <span class="accent">Select • Add to Cart • Checkout</span>
           </div>
-          <div class="section-sub">
+        <div class="section-sub">
             Saari cheeze owner ke portal se update ho sakti hain – prices, availability, new items.
           </div>
         </div>
@@ -1989,12 +2007,20 @@
             </button>
 
             <!-- CREATOR CONTROLS (NEW) -->
-            <div id="creatorControls" class="form-row-inline" style="display:none;">
-              <div class="muted">Website Status:</div>
-              <button type="button" id="siteStatusBtn" class="btn-sm" onclick="toggleSiteActive()">
-                <span class="icon-sm" id="siteStatusIcon">🟢</span>
-                <span id="siteStatusText">Active</span>
-              </button>
+            <div class="form-row-inline" style="gap:0.6rem;">
+              <div id="creatorControls" class="form-row-inline" style="display:none;">
+                <div class="muted">Website Status:</div>
+                <button type="button" id="siteStatusBtn" class="btn-sm" onclick="toggleSiteActive()">
+                  <span class="icon-sm" id="siteStatusIcon">🟢</span>
+                  <span id="siteStatusText">Active</span>
+                </button>
+              </div>
+
+              <!-- DAILY SALES BADGE (NEW) -->
+              <div class="daily-sales-badge" id="dailySalesBadge">
+                <span class="icon-xs">💰</span>
+                <span>Today: Rs <span id="dailySalesAmount">0</span> • Orders: <span id="dailySalesCount">0</span></span>
+              </div>
             </div>
           </div>
 
@@ -2005,7 +2031,7 @@
               <div class="card-title">
                 <span>Orders</span>
                 <div class="form-row-inline">
-                  <button type="button" class="btn-xs" onclick="refreshOwnerOrders()">
+                  <button type="button" class="btn-xs" onclick="refreshOwnerOrders(true)">
                     <span class="icon-xs">🔄</span>
                     <span>Refresh</span>
                   </button>
@@ -2141,7 +2167,7 @@
               Shawarma, fries, rolls aur daily snacks, sab kuch pocket-friendly prices par.
             </p>
             <p class="muted">
-              Ye website sirf ek simple phone se manage ho sakti hai: owner portal se menu update karein, orders dekhein, aur status manage karein –
+              Ye website sirf ek simple phone se manage ho sakti hai: owner portal se menu update karein, orders dekhein, aur status manage karein – 
               bina kisi heavy system ke.
             </p>
             <p class="muted">
@@ -2184,6 +2210,12 @@
 </div>
 
 <div id="toast" class="toast"></div>
+
+<!-- SIMPLE BELL SOUND (NEW) -->
+<audio id="orderBell" preload="auto">
+  <source src="https://actions.google.com/sounds/v1/alarms/beep_short.ogg" type="audio/ogg">
+  <source src="https://actions.google.com/sounds/v1/alarms/beep_short.ogg" type="audio/mpeg">
+</audio>
 
 <script>
   const PAGES = ["home", "cart", "owner", "contact"];
@@ -2642,24 +2674,103 @@
     }
   }
 
-  /* OWNER ORDERS – wired to backend */
+  /* OWNER ORDERS – wired to backend + AUTO REFRESH + BELL + DAILY SALES */
   let ownerOrders = [];
+  let lastKnownOrderIds = new Set();
+  let ordersAutoRefreshTimer = null;
+  const ORDER_POLL_INTERVAL_MS = 10000; // 10 seconds
+
+  const orderBellEl = document.getElementById("orderBell");
+
+  function playOrderBell() {
+    if (!orderBellEl) return;
+    try {
+      orderBellEl.currentTime = 0;
+      orderBellEl.play().catch(err => {
+        console.warn("Order bell play blocked or failed:", err);
+      });
+    } catch (e) {
+      console.warn("Order bell error:", e);
+    }
+  }
+
+  function isToday(dateStr) {
+    const d = new Date(dateStr);
+    if (isNaN(d.getTime())) return false;
+    const now = new Date();
+    return (
+      d.getFullYear() === now.getFullYear() &&
+      d.getMonth() === now.getMonth() &&
+      d.getDate() === now.getDate()
+    );
+  }
+
+  function updateDailySalesStats() {
+    let todayTotal = 0;
+    let todayOrders = 0;
+
+    ownerOrders.forEach(o => {
+      if (isToday(o.createdAt)) {
+        todayOrders += 1;
+        todayTotal += Number(o.totalAmount || 0);
+      }
+    });
+
+    const amtEl = document.getElementById("dailySalesAmount");
+    const cntEl = document.getElementById("dailySalesCount");
+    if (amtEl) amtEl.textContent = todayTotal;
+    if (cntEl) cntEl.textContent = todayOrders;
+  }
 
   async function loadOwnerData() {
     renderOwnerCategorySelect();
     renderOwnerMenuItems();
-    await refreshOwnerOrders();
+    await refreshOwnerOrders(false);
+    startOrdersAutoRefresh();
   }
 
-  async function refreshOwnerOrders() {
+  function startOrdersAutoRefresh() {
+    if (ordersAutoRefreshTimer) clearInterval(ordersAutoRefreshTimer);
+    ordersAutoRefreshTimer = setInterval(() => {
+      refreshOwnerOrders(false);
+    }, ORDER_POLL_INTERVAL_MS);
+  }
+
+  async function refreshOwnerOrders(fromManualButton = false) {
+    let previousIds = new Set(lastKnownOrderIds);
     try {
       const res = await fetch(API_BASE + "/api/orders");
       if (!res.ok) throw new Error("Failed to load orders");
-      ownerOrders = await res.json();
+      const data = await res.json();
+      ownerOrders = Array.isArray(data) ? data : [];
     } catch (e) {
       console.error(e);
-      showToast("Could not load orders (check connection).");
+      if (fromManualButton) {
+        showToast("Could not load orders (check connection).");
+      }
     }
+
+    // Detect new orders (for bell sound). We consider new order if its id was not in previousIds.
+    const newOrderIds = new Set();
+    ownerOrders.forEach(o => {
+      if (o && o.id != null) {
+        newOrderIds.add(String(o.id));
+      }
+    });
+
+    // Compare only if we had some previous state (avoid bell on first load)
+    if (previousIds.size > 0) {
+      let hasNew = false;
+      newOrderIds.forEach(id => {
+        if (!previousIds.has(id)) hasNew = true;
+      });
+      if (hasNew) {
+        playOrderBell();
+        showToast("New order received!");
+      }
+    }
+    lastKnownOrderIds = newOrderIds;
+
     renderOwnerOrders();
   }
 
@@ -2727,6 +2838,9 @@
     const pendingCount = ownerOrders.filter(o => (o.status || "Pending") === "Pending").length;
     const confirmedCount = ownerOrders.filter(o => o.status === "Confirmed").length;
     summaryEl.textContent = `${ownerOrders.length} total • ${pendingCount} pending • ${confirmedCount} confirmed`;
+
+    // Update daily sales (NEW)
+    updateDailySalesStats();
   }
 
   async function ownerToggleOrderStatus(orderId, currentStatus) {
